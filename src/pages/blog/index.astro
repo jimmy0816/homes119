@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout title="所有文章" description="水管清洗、熱水器問題、水管漏水的完整解說文章">
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title">所有文章</h1>
+      <div class="cards-grid">
+        {posts.map(post => (
+          <a href={`/blog/${post.id}/`} class="card" style="text-decoration:none;color:inherit;">
+            <div class="card-tag">{post.data.category || '水管知識'}</div>
+            <h3>{post.data.title}</h3>
+            <p>{post.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

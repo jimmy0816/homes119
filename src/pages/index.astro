@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+---
+<BaseLayout title="水管清洗費用、推薦、完整資訊">
+  <div class="hero">
+    <div class="container">
+      <h1>水管清洗，你需要知道的一切</h1>
+      <p>費用透明、中立評比、幫你找到對的師傅<br>不賣服務，只給你做決定需要的資訊</p>
+      <a href="/price/" class="btn-primary">查費用行情</a>
+      <a href="/blog/" class="btn-secondary">看文章</a>
+    </div>
+  </div>
+
+  <!-- Quick price reference -->
+  <section class="section" style="background:#fff;">
+    <div class="container">
+      <h2 class="section-title">水管清洗費用行情（2026 最新）</h2>
+      <table class="price-table">
+        <tr><th>服務類型</th><th>費用範圍</th><th>適用情境</th></tr>
+        <tr><td>公寓/大樓水管清洗</td><td class="price-highlight">$3,000–$4,500</td><td>1廚2衛標準戶型</td></tr>
+        <tr><td>透天厝水管清洗</td><td class="price-highlight">$5,000–$8,000</td><td>多廚多衛，依樓層計</td></tr>
+        <tr><td>高壓水刀疏通</td><td class="price-highlight">$15,000–$18,000</td><td>嚴重阻塞、商業用途</td></tr>
+        <tr><td>免打牆補漏水管</td><td class="price-highlight">$8,000–$20,000</td><td>牆內管路漏水</td></tr>
+      </table>
+      <p style="font-size:0.875rem;color:#6B7280;">以上為市場參考行情，實際報價依現場評估而定。</p>
+    </div>
+  </section>
+
+  <!-- Latest articles -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">最新文章</h2>
+      <div class="cards-grid">
+        {posts.map(post => (
+          <a href={`/blog/${post.id}/`} class="card" style="text-decoration:none;color:inherit;">
+            <div class="card-tag">{post.data.category || '水管知識'}</div>
+            <h3>{post.data.title}</h3>
+            <p>{post.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <div class="container">
+      <h2>想找你家附近的水管清洗師傅？</h2>
+      <p>告訴我你的地區和需求，幫你媒合合適的師傅</p>
+      <a href="/contact/" class="btn-cta">免費詢價</a>
+    </div>
+  </div>
+</BaseLayout>

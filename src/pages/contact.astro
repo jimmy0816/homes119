@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="免費詢價" description="告訴我們你的需求，幫你媒合合適的水管清洗師傅">
+  <section class="section">
+    <div class="content-container">
+      <h1>免費詢價</h1>
+      <p style="margin:1rem 0;">填寫以下資訊，我們會幫你媒合附近合適的水管清洗師傅（免費服務）。</p>
+      <form style="background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:2rem;margin-top:1.5rem;">
+        <div style="margin-bottom:1.25rem;">
+          <label style="display:block;font-weight:600;margin-bottom:0.5rem;">地區 *</label>
+          <select style="width:100%;padding:0.75rem;border:1px solid #D1D5DB;border-radius:6px;">
+            <option>台北市</option><option>新北市</option><option>桃園市</option>
+            <option>台中市</option><option>台南市</option><option>高雄市</option><option>其他</option>
+          </select>
+        </div>
+        <div style="margin-bottom:1.25rem;">
+          <label style="display:block;font-weight:600;margin-bottom:0.5rem;">房型 *</label>
+          <select style="width:100%;padding:0.75rem;border:1px solid #D1D5DB;border-radius:6px;">
+            <option>公寓/大樓</option><option>透天厝</option><option>商業空間</option>
+          </select>
+        </div>
+        <div style="margin-bottom:1.25rem;">
+          <label style="display:block;font-weight:600;margin-bottom:0.5rem;">問題描述</label>
+          <textarea style="width:100%;padding:0.75rem;border:1px solid #D1D5DB;border-radius:6px;min-height:100px;" placeholder="例如：熱水量越來越小、水有鐵鏽味..."></textarea>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+          <label style="display:block;font-weight:600;margin-bottom:0.5rem;">聯絡方式 *</label>
+          <input type="text" style="width:100%;padding:0.75rem;border:1px solid #D1D5DB;border-radius:6px;" placeholder="手機或 LINE ID" />
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;cursor:pointer;border:none;font-size:1rem;">送出詢價</button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
