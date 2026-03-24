@@ -1292,47 +1292,118 @@ img { display: block; max-width: 100%; }
 }
 
 /* ── Responsive ──────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .container, .content-container { padding: 0 var(--space-5); }
-
-  .hero { min-height: 85vh; }
-  .hero h1 { font-size: 42px; }
-  .hero-actions { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-
-  .section-title { font-size: 28px; }
-  .cta-banner h2 { font-size: 28px; }
-
-  .nav-links { gap: var(--space-5); }
-  .nav-links .nav-cta { display: none; }
-
-  .featured-card { grid-template-columns: 1fr; }
-  .featured-card-visual { display: none; }
-
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-8); }
-  .footer-inner { padding: var(--space-8) var(--space-5); }
-  .footer-bottom { padding: var(--space-5); flex-direction: column; gap: var(--space-3); text-align: center; }
-
-  .newsletter-new { flex-direction: column; padding: 48px var(--space-5); align-items: flex-start; }
-  .nl-right { width: 100%; min-width: 0; align-items: flex-start; }
-  .nl-input-wrap { flex-direction: column; }
-
-  .featured-section { grid-template-columns: 1fr; }
-  .feat-img-bg { height: 240px; }
-  .featured-body { border-left: none; border-top: 0.5px solid var(--color-border); }
-
-  .articles-grid-new { grid-template-columns: 1fr; }
-  .article-card-new { border-right: none; border-bottom: 0.5px solid var(--color-border); }
-
+/* ── Responsive: Tablet ────────────────────────────────────── */
+@media (max-width: 1024px) {
   .symptoms-grid-new { grid-template-columns: repeat(2, 1fr); }
   .sym-card-new { border-bottom: 0.5px solid var(--color-border); }
-  .sym-card-new.last { border-right: 0.5px solid var(--color-border); }
   .sym-card-new:nth-child(2n) { border-right: none; }
 
-  .page-header { padding: var(--space-8) var(--space-5); }
-  .filter-bar { padding: 0 var(--space-5); overflow-x: auto; }
-  .symptom-inner { padding: 0 var(--space-5); }
+  .footer-inner { grid-template-columns: 2fr 1fr 1fr; }
+  .footer-inner > div:last-child { display: none; }
+}
 
-  .blog-hero h1 { font-size: 40px; }
-  .page-hero h1 { font-size: 40px; }
-  .article-hero h1 { font-size: 26px; }
+/* ── Responsive: Mobile ───────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Layout */
+  .container, .content-container { padding: 0 var(--space-5); }
+
+  /* Nav — hide middle links, keep logo + CTA button */
+  .nav-links { display: none; }
+  .nav-cta-btn { padding: 6px 14px; font-size: 12px; }
+  .site-nav .container { padding: 0 var(--space-5); }
+
+  /* Hero */
+  .hero { min-height: 75vh; }
+  .hero h1 { font-size: 36px; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: 2px; }
+  .hero-desc { font-size: 13px; }
+  .hero-actions { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .hero .container { padding-top: var(--space-10); padding-bottom: var(--space-10); }
+
+  /* Page header */
+  .page-header { padding: var(--space-6) var(--space-5) var(--space-5); }
+  .page-header p { font-size: 14px; }
+
+  /* Filter bar — horizontal scroll */
+  .filter-bar {
+    padding: 0 var(--space-5);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0; margin-right: var(--space-5); font-size: 12px; padding: 12px 0; }
+
+  /* Featured */
+  .featured-section { grid-template-columns: 1fr; }
+  .feat-img-bg { height: 200px; }
+  .featured-body { border-left: none; border-top: 0.5px solid var(--color-border); padding: var(--space-6) var(--space-5); }
+  .featured-body h2 { font-size: 20px; }
+
+  /* Articles grid — single column */
+  .articles-grid-new { grid-template-columns: 1fr; }
+  .article-card-new { border-right: none; border-bottom: 0.5px solid var(--color-border); }
+  .article-card-new:last-child { border-bottom: none; }
+  .ac-img { height: 180px; }
+  .article-body { padding: var(--space-5); }
+
+  /* Symptoms — 2 columns */
+  .symptom-section { padding: var(--space-10) 0; }
+  .symptom-section h2 { font-size: 20px; }
+  .symptom-inner { padding: 0 var(--space-5); }
+  .symptoms-grid-new { grid-template-columns: repeat(2, 1fr); }
+  .sym-card-new { border-bottom: 0.5px solid var(--color-border); padding: var(--space-5) var(--space-4); }
+  .sym-card-new:nth-child(2n) { border-right: none; }
+  .sym-card-new:nth-child(n+3) { border-bottom: none; }
+
+  /* Newsletter — stack vertically */
+  .newsletter-new {
+    flex-direction: column;
+    padding: var(--space-10) var(--space-5);
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+  .nl-title { font-size: 36px; }
+  .nl-right { width: 100%; min-width: 0; align-items: flex-start; }
+  .nl-input-wrap { flex-direction: column; }
+  .nl-input, .nl-btn { width: 100%; }
+
+  /* Footer — single column */
+  .footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-6);
+    padding: var(--space-8) var(--space-5);
+  }
+  .footer-bottom {
+    padding: var(--space-5);
+    flex-direction: column;
+    gap: var(--space-2);
+    text-align: center;
+  }
+
+  /* Blog pages */
+  .blog-hero h1 { font-size: 36px; }
+  .page-hero h1 { font-size: 36px; }
+  .article-hero h1 { font-size: 22px; }
+
+  /* Section titles */
+  .section-title { font-size: 24px; }
+
+  /* Price table scroll */
+  .price-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .price-table { min-width: 500px; }
+
+  /* Featured card (old pages) */
+  .featured-card { grid-template-columns: 1fr; }
+  .featured-card-visual { display: none; }
+}
+
+/* ── Responsive: Small phones ─────────────────────────────── */
+@media (max-width: 400px) {
+  .hero h1 { font-size: 28px; }
+  .nl-title { font-size: 28px; }
+  .symptoms-grid-new { grid-template-columns: 1fr; }
+  .sym-card-new { border-right: none !important; border-bottom: 0.5px solid var(--color-border); }
+  .sym-card-new:last-child { border-bottom: none; }
 }
