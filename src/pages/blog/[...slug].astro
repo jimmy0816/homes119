@@ -15,23 +15,29 @@ const { Content } = await render(post);
 const pubDate = post.data.pubDate.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 <BaseLayout title={post.data.title} description={post.data.description}>
+
+  <!-- Article Hero (dark) -->
   <div class="article-hero">
     <div class="content-container">
-      <div class="article-meta">{pubDate} · {post.data.category || '水管知識'}</div>
-      <h1 style="font-size:1.875rem;font-weight:800;">{post.data.title}</h1>
-      <p style="color:#6B7280;margin-top:0.75rem;">{post.data.description}</p>
+      <div class="article-meta">{pubDate} &nbsp;·&nbsp; {post.data.category || '水管知識'}</div>
+      <h1>{post.data.title}</h1>
+      <p class="article-hero-desc">{post.data.description}</p>
     </div>
   </div>
+
+  <!-- Article Body -->
   <div class="article-content">
     <div class="content-container">
       <Content />
-      <div class="cta-banner" style="margin-top:3rem;border-radius:8px;">
-        <div style="padding:2rem;">
-          <h2>想找你家附近的水管清洗師傅？</h2>
-          <p>告訴我你的地區和需求，幫你媒合合適的師傅</p>
-          <a href="/contact/" class="btn-cta">免費詢價</a>
-        </div>
+
+      <!-- Inline CTA -->
+      <div style="border: 1px solid var(--color-border); margin-top: var(--space-12); padding: var(--space-8); background: var(--color-bg-card);">
+        <p class="section-label">需要師傅嗎</p>
+        <h3 style="font-size:20px;font-weight:400;color:var(--color-text-primary);margin-bottom:var(--space-3);">免費媒合水管清洗師傅</h3>
+        <p style="font-size:13px;font-weight:300;color:var(--color-text-secondary);margin-bottom:var(--space-6);">告訴我們你的地區和需求，幫你找到合適的師傅</p>
+        <a href="/contact/" class="btn-primary">免費詢價</a>
       </div>
     </div>
   </div>
+
 </BaseLayout>

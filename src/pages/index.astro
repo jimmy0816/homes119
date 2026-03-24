@@ -4,56 +4,157 @@ import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('posts'))
   .filter(p => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 6);
----
-<BaseLayout title="水管清洗費用、推薦、完整資訊">
-  <div class="hero">
-    <div class="container">
-      <h1>水管清洗，你需要知道的一切</h1>
-      <p>費用透明、中立評比、幫你找到對的師傅<br>不賣服務，只給你做決定需要的資訊</p>
-      <a href="/price/" class="btn-primary">查費用行情</a>
-      <a href="/blog/" class="btn-secondary">看文章</a>
-    </div>
-  </div>
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-  <!-- Quick price reference -->
-  <section class="section" style="background:#fff;">
+const featured = posts[0];
+const gridPosts = posts.slice(1, 7);
+---
+<BaseLayout title="水管清洗費用、推薦、完整資訊" heroNav={true}>
+
+  <!-- Hero -->
+  <section class="hero">
     <div class="container">
-      <h2 class="section-title">水管清洗費用行情（2026 最新）</h2>
-      <table class="price-table">
-        <tr><th>服務類型</th><th>費用範圍</th><th>適用情境</th></tr>
-        <tr><td>公寓/大樓水管清洗</td><td class="price-highlight">$3,000–$4,500</td><td>1廚2衛標準戶型</td></tr>
-        <tr><td>透天厝水管清洗</td><td class="price-highlight">$5,000–$8,000</td><td>多廚多衛，依樓層計</td></tr>
-        <tr><td>高壓水刀疏通</td><td class="price-highlight">$15,000–$18,000</td><td>嚴重阻塞、商業用途</td></tr>
-        <tr><td>免打牆補漏水管</td><td class="price-highlight">$8,000–$20,000</td><td>牆內管路漏水</td></tr>
-      </table>
-      <p style="font-size:0.875rem;color:#6B7280;">以上為市場參考行情，實際報價依現場評估而定。</p>
+      <p class="hero-eyebrow">Taiwan Pipe Cleaning Guide</p>
+      <h1>水管清洗<br><span>費用透明</span><br>中立資訊</h1>
+      <p class="hero-desc">不賣服務、不收業者推薦費。幫你看懂行情、找對師傅，做出正確決定。</p>
+      <div class="hero-actions">
+        <a href="/price/" class="btn-primary">查費用行情</a>
+        <a href="/blog/" class="btn-secondary">看文章</a>
+      </div>
     </div>
   </section>
 
-  <!-- Latest articles -->
-  <section class="section">
+  <!-- Symptoms Grid -->
+  <section class="section-sm" style="background: var(--color-bg);">
     <div class="container">
-      <h2 class="section-title">最新文章</h2>
-      <div class="cards-grid">
-        {posts.map(post => (
-          <a href={`/blog/${post.id}/`} class="card" style="text-decoration:none;color:inherit;">
+      <p class="section-label">你遇到了什麼問題</p>
+      <div class="sym-grid">
+        <div class="sym-card">
+          <span class="sym-icon">🔥</span>
+          <h3>熱水量變小</h3>
+          <p>熱水器出水越來越細，管內水垢堆積是主因</p>
+        </div>
+        <div class="sym-card">
+          <span class="sym-icon">🟡</span>
+          <h3>水變黃或有鐵鏽味</h3>
+          <p>老舊鐵管氧化，水質含鐵量超標</p>
+        </div>
+        <div class="sym-card">
+          <span class="sym-icon">📉</span>
+          <h3>水壓不足</h3>
+          <p>全屋水壓低，管內結垢堵塞是常見原因</p>
+        </div>
+        <div class="sym-card">
+          <span class="sym-icon">💧</span>
+          <h3>漏水或滲水</h3>
+          <p>牆壁潮濕、水費暴增，管路可能破損</p>
+        </div>
+        <div class="sym-card">
+          <span class="sym-icon">🪨</span>
+          <h3>水垢嚴重</h3>
+          <p>蓮蓬頭、水龍頭結垢快，硬水地區需定期清洗</p>
+        </div>
+        <div class="sym-card">
+          <span class="sym-icon">🏚️</span>
+          <h3>老屋翻修</h3>
+          <p>屋齡 20 年以上，預防性清洗延長管路壽命</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Price Reference -->
+  <section class="section" style="background: var(--color-bg-card); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <p class="section-label">費用參考</p>
+      <h2 class="section-title">水管清洗費用行情<br>2026 最新</h2>
+      <table class="price-table">
+        <tr>
+          <th>服務類型</th>
+          <th>費用範圍</th>
+          <th>適用情境</th>
+        </tr>
+        <tr>
+          <td>公寓 / 大樓水管清洗</td>
+          <td class="price-highlight">$3,000–$4,500</td>
+          <td>1廚2衛標準戶型</td>
+        </tr>
+        <tr>
+          <td>透天厝水管清洗</td>
+          <td class="price-highlight">$5,000–$8,000</td>
+          <td>多廚多衛，依樓層計</td>
+        </tr>
+        <tr>
+          <td>高壓水刀疏通</td>
+          <td class="price-highlight">$15,000–$18,000</td>
+          <td>嚴重阻塞、商業用途</td>
+        </tr>
+        <tr>
+          <td>免打牆補漏水管</td>
+          <td class="price-highlight">$8,000–$20,000</td>
+          <td>牆內管路漏水</td>
+        </tr>
+      </table>
+      <p style="font-size:12px;font-weight:300;color:var(--color-text-muted);margin-top:var(--space-4);">以上為市場參考行情，實際報價依現場評估而定。</p>
+      <a href="/price/" class="read-more" style="margin-top:var(--space-6);display:inline-flex;">查看完整費用表</a>
+    </div>
+  </section>
+
+  <!-- Featured Article -->
+  {featured && (
+    <section class="section">
+      <div class="container">
+        <p class="section-label">精選文章</p>
+        <a href={`/blog/${featured.id}/`} class="featured-card" style="text-decoration:none;color:inherit;">
+          <div class="featured-card-body">
+            <p class="featured-tag">{featured.data.category || '水管知識'}</p>
+            <h2>{featured.data.title}</h2>
+            <p>{featured.data.description}</p>
+            <span class="read-more">閱讀全文</span>
+          </div>
+          <div class="featured-card-visual">🔧</div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- Article Grid -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <p class="section-label">最新文章</p>
+      <div class="articles-grid">
+        {gridPosts.map(post => (
+          <a href={`/blog/${post.id}/`} class="article-card">
             <div class="card-tag">{post.data.category || '水管知識'}</div>
             <h3>{post.data.title}</h3>
             <p>{post.data.description}</p>
           </a>
         ))}
       </div>
+      <a href="/blog/" class="read-more" style="margin-top:var(--space-6);display:inline-flex;">所有文章</a>
     </div>
   </section>
 
-  <!-- CTA -->
+  <!-- Newsletter -->
+  <section class="newsletter-section">
+    <div class="container">
+      <p class="section-label">訂閱更新</p>
+      <h2>水管知識週報</h2>
+      <p>每月一封，整理最新費用行情與水管維護技巧，不推銷、不垃圾郵件。</p>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" class="newsletter-input" placeholder="your@email.com" />
+        <button type="submit" class="newsletter-btn">訂閱</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
   <div class="cta-banner">
     <div class="container">
-      <h2>想找你家附近的水管清洗師傅？</h2>
-      <p>告訴我你的地區和需求，幫你媒合合適的師傅</p>
+      <h2>找你家附近的<br>水管清洗師傅</h2>
+      <p>告訴我們你的地區和需求，幫你媒合合適的師傅</p>
       <a href="/contact/" class="btn-cta">免費詢價</a>
     </div>
   </div>
+
 </BaseLayout>

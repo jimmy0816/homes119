@@ -7,12 +7,21 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 <BaseLayout title="所有文章" description="水管清洗、熱水器問題、水管漏水的完整解說文章">
+
+  <!-- Page Hero -->
+  <section class="blog-hero">
+    <div class="container">
+      <p class="section-label" style="color:var(--color-dark-text-hint);">Knowledge Base</p>
+      <h1>水管知識庫</h1>
+    </div>
+  </section>
+
+  <!-- Article Grid -->
   <section class="section">
     <div class="container">
-      <h1 class="section-title">所有文章</h1>
-      <div class="cards-grid">
-        {posts.map(post => (
-          <a href={`/blog/${post.id}/`} class="card" style="text-decoration:none;color:inherit;">
+      <div class="articles-grid">
+        {posts.map((post, i) => (
+          <a href={`/blog/${post.id}/`} class="article-card" style={`animation-delay:${Math.min(i, 8) * 60}ms`}>
             <div class="card-tag">{post.data.category || '水管知識'}</div>
             <h3>{post.data.title}</h3>
             <p>{post.data.description}</p>
@@ -21,4 +30,14 @@ const posts = (await getCollection('posts'))
       </div>
     </div>
   </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <div class="container">
+      <h2>需要詢價？</h2>
+      <p>免費媒合你附近的水管清洗師傅</p>
+      <a href="/contact/" class="btn-cta">免費詢價</a>
+    </div>
+  </div>
+
 </BaseLayout>

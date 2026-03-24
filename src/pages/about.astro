@@ -2,22 +2,37 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="關於我們" description="homes119.com 是一個中立的水管清洗資訊站">
-  <section class="section">
+
+  <!-- Page Hero -->
+  <section class="page-hero">
     <div class="content-container">
-      <h1>關於 homes119.com</h1>
-      <div class="snippet-box" style="margin-top:1.5rem;">
-        homes119 是台灣第一個專注於自來水管清洗的中立資訊站，我們不賣服務、不收業者推薦費，只給你做決定需要的資訊。
+      <p class="section-label" style="color:var(--color-dark-text-hint);">About</p>
+      <h1>關於<br>homes119</h1>
+      <p>台灣第一個專注於自來水管清洗的中立資訊站</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="section">
+    <div class="content-container about-content">
+
+      <div class="snippet-box">
+        homes119 不賣服務、不收業者推薦費，只給你做決定需要的資訊。
       </div>
+
       <h2>我們是誰</h2>
       <p>homes119.com 由一群關注台灣居家水質的人維護。我們發現，很多台灣屋主在面對「要不要洗水管」「要找哪家」「費用大概多少」這些問題時，只能靠業者廣告和口耳相傳，很容易被誤導或多付冤枉錢。</p>
       <p>所以我們建立了這個網站，整理市場上的真實費用行情、清洗工法的原理、選師傅的重點，讓你在做決定之前就有完整的資訊。</p>
+
       <h2>我們的原則</h2>
       <ul>
-        <li>✅ 中立：我們不替任何業者背書，不收推薦費</li>
-        <li>✅ 透明：費用行情來自市場調查，不是業者自報</li>
-        <li>✅ 實用：每篇文章都有具體建議，不只說「視情況而定」</li>
-        <li>✅ 誠實：如果某些情況不需要洗水管，我們也會直說</li>
+        <li>✅ &nbsp;中立：我們不替任何業者背書，不收推薦費</li>
+        <li>✅ &nbsp;透明：費用行情來自市場調查，不是業者自報</li>
+        <li>✅ &nbsp;實用：每篇文章都有具體建議，不只說「視情況而定」</li>
+        <li>✅ &nbsp;誠實：如果某些情況不需要洗水管，我們也會直說</li>
       </ul>
+
     </div>
   </section>
+
 </BaseLayout>
