@@ -7,11 +7,11 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const featured = posts[0];
-const gridPosts = posts.slice(1, 7);
+const gridPosts = posts.slice(1, 4);
 ---
 <BaseLayout title="水管清洗費用、推薦、完整資訊" heroNav={true}>
 
-  <!-- Hero -->
+  <!-- Hero（不動） -->
   <section class="hero">
     <div class="container">
       <p class="hero-eyebrow">Taiwan Pipe Cleaning Guide</p>
@@ -24,136 +24,109 @@ const gridPosts = posts.slice(1, 7);
     </div>
   </section>
 
-  <!-- Symptoms Grid -->
-  <section class="section-sm" style="background: var(--color-bg);">
-    <div class="container">
-      <p class="section-label">你遇到了什麼問題</p>
-      <div class="sym-grid">
-        <div class="sym-card">
-          <span class="sym-icon">🔥</span>
-          <h3>熱水量變小</h3>
-          <p>熱水器出水越來越細，管內水垢堆積是主因</p>
-        </div>
-        <div class="sym-card">
-          <span class="sym-icon">🟡</span>
-          <h3>水變黃或有鐵鏽味</h3>
-          <p>老舊鐵管氧化，水質含鐵量超標</p>
-        </div>
-        <div class="sym-card">
-          <span class="sym-icon">📉</span>
-          <h3>水壓不足</h3>
-          <p>全屋水壓低，管內結垢堵塞是常見原因</p>
-        </div>
-        <div class="sym-card">
-          <span class="sym-icon">💧</span>
-          <h3>漏水或滲水</h3>
-          <p>牆壁潮濕、水費暴增，管路可能破損</p>
-        </div>
-        <div class="sym-card">
-          <span class="sym-icon">🪨</span>
-          <h3>水垢嚴重</h3>
-          <p>蓮蓬頭、水龍頭結垢快，硬水地區需定期清洗</p>
-        </div>
-        <div class="sym-card">
-          <span class="sym-icon">🏚️</span>
-          <h3>老屋翻修</h3>
-          <p>屋齡 20 年以上，預防性清洗延長管路壽命</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Page Header -->
+  <div class="page-header">
+    <p>不賣服務，只給你做決定需要的資訊。費用行情、症狀判斷、師傅評比——全部公開透明。</p>
+  </div>
 
-  <!-- Quick Price Reference -->
-  <section class="section" style="background: var(--color-bg-card); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
-    <div class="container">
-      <p class="section-label">費用參考</p>
-      <h2 class="section-title">水管清洗費用行情<br>2026 最新</h2>
-      <table class="price-table">
-        <tr>
-          <th>服務類型</th>
-          <th>費用範圍</th>
-          <th>適用情境</th>
-        </tr>
-        <tr>
-          <td>公寓 / 大樓水管清洗</td>
-          <td class="price-highlight">$3,000–$4,500</td>
-          <td>1廚2衛標準戶型</td>
-        </tr>
-        <tr>
-          <td>透天厝水管清洗</td>
-          <td class="price-highlight">$5,000–$8,000</td>
-          <td>多廚多衛，依樓層計</td>
-        </tr>
-        <tr>
-          <td>高壓水刀疏通</td>
-          <td class="price-highlight">$15,000–$18,000</td>
-          <td>嚴重阻塞、商業用途</td>
-        </tr>
-        <tr>
-          <td>免打牆補漏水管</td>
-          <td class="price-highlight">$8,000–$20,000</td>
-          <td>牆內管路漏水</td>
-        </tr>
-      </table>
-      <p style="font-size:12px;font-weight:300;color:var(--color-text-muted);margin-top:var(--space-4);">以上為市場參考行情，實際報價依現場評估而定。</p>
-      <a href="/price/" class="read-more" style="margin-top:var(--space-6);display:inline-flex;">查看完整費用表</a>
-    </div>
-  </section>
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <button class="filter-btn active">全部</button>
+    <button class="filter-btn">費用行情</button>
+    <button class="filter-btn">症狀診斷</button>
+    <button class="filter-btn">師傅評比</button>
+    <button class="filter-btn">DIY 指南</button>
+  </div>
 
   <!-- Featured Article -->
   {featured && (
-    <section class="section">
-      <div class="container">
-        <p class="section-label">精選文章</p>
-        <a href={`/blog/${featured.id}/`} class="featured-card" style="text-decoration:none;color:inherit;">
-          <div class="featured-card-body">
-            <p class="featured-tag">{featured.data.category || '水管知識'}</p>
-            <h2>{featured.data.title}</h2>
-            <p>{featured.data.description}</p>
-            <span class="read-more">閱讀全文</span>
-          </div>
-          <div class="featured-card-visual">🔧</div>
-        </a>
+    <div class="featured-section">
+      <div class="feat-img-bg"></div>
+      <div class="featured-body">
+        <div class="tag">{featured.data.category || '費用行情'}</div>
+        <h2>{featured.data.title}</h2>
+        <p>{featured.data.description}</p>
+        <a href={`/blog/${featured.id}/`} class="read-link">閱讀完整報告 →</a>
+        <div class="feat-meta">
+          {featured.data.pubDate.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long' })}
+          {featured.data.readingTime && ` · 閱讀時間 ${featured.data.readingTime} 分鐘`}
+        </div>
       </div>
-    </section>
+    </div>
   )}
 
-  <!-- Article Grid -->
-  <section class="section" style="padding-top:0;">
-    <div class="container">
-      <p class="section-label">最新文章</p>
-      <div class="articles-grid">
-        {gridPosts.map(post => (
-          <a href={`/blog/${post.id}/`} class="article-card">
-            <div class="card-tag">{post.data.category || '水管知識'}</div>
-            <h3>{post.data.title}</h3>
-            <p>{post.data.description}</p>
-          </a>
-        ))}
+  <!-- Articles Grid（3 欄） -->
+  <div class="articles-grid-new">
+    {gridPosts.map((post, i) => (
+      <a href={`/blog/${post.id}/`} class={`article-card-new${i === gridPosts.length - 1 ? ' last' : ''}`}>
+        <div class="ac-img"></div>
+        <div class="article-body-new">
+          <div class="tag">{post.data.category || '水管知識'}</div>
+          <h3>{post.data.title}</h3>
+          <p>{post.data.description}</p>
+          <div class="article-meta-new">
+            <span>{post.data.category || '水管知識'}</span>
+            <span>{post.data.pubDate.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long' })}</span>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <!-- Symptoms Grid（4 欄） -->
+  <div class="symptom-section">
+    <div class="symptom-inner">
+      <h2 class="symptom-title">從症狀開始找答案</h2>
+      <p class="symptom-sub">選擇你正在碰到的狀況，直接看對應的費用行情與解法</p>
+      <div class="symptoms-grid-new">
+        <div class="sym-card-new">
+          <div class="sym-icon-wrap">
+            <svg viewBox="0 0 18 18" fill="none" stroke="#E07020" stroke-width="1.5" stroke-linecap="round"><path d="M9 2v4M9 14v2M5 9H2M16 9h-3M6.5 6.5L4.5 4.5M13.5 13.5l-1.5-1.5M11.5 6.5l2-2M4.5 13.5l1.5-1.5"/><circle cx="9" cy="9" r="2.5"/></svg>
+          </div>
+          <h4>熱水變小、變弱</h4>
+          <p>可能是水垢堆積或水管鏽蝕</p>
+          <div class="sym-arrow">查看費用 →</div>
+        </div>
+        <div class="sym-card-new">
+          <div class="sym-icon-wrap">
+            <svg viewBox="0 0 18 18" fill="none" stroke="#E07020" stroke-width="1.5" stroke-linecap="round"><path d="M6 16c0-3 6-6 6-10a6 6 0 00-12 0c0 2 1.5 4 3 5"/><path d="M9 13v3"/></svg>
+          </div>
+          <h4>水有鐵鏽味</h4>
+          <p>老舊鐵管氧化，水質含鐵量超標</p>
+          <div class="sym-arrow">查看費用 →</div>
+        </div>
+        <div class="sym-card-new">
+          <div class="sym-icon-wrap">
+            <svg viewBox="0 0 18 18" fill="none" stroke="#E07020" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="6" width="14" height="8" rx="2"/><path d="M6 6V4a3 3 0 016 0v2"/></svg>
+          </div>
+          <h4>廚房浴室堵塞</h4>
+          <p>管內油脂或異物堆積造成排水不順</p>
+          <div class="sym-arrow">查看費用 →</div>
+        </div>
+        <div class="sym-card-new last">
+          <div class="sym-icon-wrap">
+            <svg viewBox="0 0 18 18" fill="none" stroke="#E07020" stroke-width="1.5" stroke-linecap="round"><path d="M3 14s1-1 4-1 5 2 8 2"/><path d="M9 4v6M7 8l2 2 2-2"/></svg>
+          </div>
+          <h4>天花板牆壁滲水</h4>
+          <p>管路破損或接頭老化導致漏水</p>
+          <div class="sym-arrow">查看費用 →</div>
+        </div>
       </div>
-      <a href="/blog/" class="read-more" style="margin-top:var(--space-6);display:inline-flex;">所有文章</a>
     </div>
-  </section>
+  </div>
 
-  <!-- Newsletter -->
-  <section class="newsletter-section">
-    <div class="container">
-      <p class="section-label">訂閱更新</p>
-      <h2>水管知識週報</h2>
-      <p>每月一封，整理最新費用行情與水管維護技巧，不推銷、不垃圾郵件。</p>
-      <form class="newsletter-form" onsubmit="return false;">
-        <input type="email" class="newsletter-input" placeholder="your@email.com" />
-        <button type="submit" class="newsletter-btn">訂閱</button>
-      </form>
+  <!-- Newsletter（黑底） -->
+  <div class="newsletter-new">
+    <div class="nl-left">
+      <div class="nl-title">每月行情<br>報告</div>
+      <p class="nl-sub">不推銷、不業配。只有真實的市場行情。</p>
     </div>
-  </section>
-
-  <!-- CTA Banner -->
-  <div class="cta-banner">
-    <div class="container">
-      <h2>找你家附近的<br>水管清洗師傅</h2>
-      <p>告訴我們你的地區和需求，幫你媒合合適的師傅</p>
-      <a href="/contact/" class="btn-cta">免費詢價</a>
+    <div class="nl-right">
+      <div class="nl-input-wrap">
+        <input class="nl-input" placeholder="your@email.com" type="email" />
+        <button class="nl-btn">訂閱</button>
+      </div>
+      <span class="nl-note">每月最多一封，可隨時取消</span>
     </div>
   </div>
 
