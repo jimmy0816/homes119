@@ -15,41 +15,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Form -->
   <section class="section">
     <div class="content-container">
-      <form class="contact-form" onsubmit="return false;">
+      <form class="contact-form" id="inquiry-form" novalidate>
 
         <div class="form-group">
-          <label class="form-label">地區 *</label>
-          <select class="form-select">
-            <option>台北市</option>
-            <option>新北市</option>
-            <option>桃園市</option>
-            <option>台中市</option>
-            <option>台南市</option>
-            <option>高雄市</option>
-            <option>其他</option>
+          <label class="form-label" for="region">地區 *</label>
+          <select class="form-select" id="region" name="region" required>
+            <option value="台北市">台北市</option>
+            <option value="新北市">新北市</option>
+            <option value="桃園市">桃園市</option>
+            <option value="台中市">台中市</option>
+            <option value="台南市">台南市</option>
+            <option value="高雄市">高雄市</option>
+            <option value="其他">其他</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label class="form-label">房型 *</label>
-          <select class="form-select">
-            <option>公寓 / 大樓</option>
-            <option>透天厝</option>
-            <option>商業空間</option>
+          <label class="form-label" for="houseType">房型 *</label>
+          <select class="form-select" id="houseType" name="houseType" required>
+            <option value="公寓 / 大樓">公寓 / 大樓</option>
+            <option value="透天厝">透天厝</option>
+            <option value="商業空間">商業空間</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label class="form-label">問題描述</label>
-          <textarea class="form-textarea" placeholder="例如：熱水量越來越小、水有鐵鏽味..."></textarea>
+          <label class="form-label" for="description">問題描述</label>
+          <textarea class="form-textarea" id="description" name="description" placeholder="例如：熱水量越來越小、水有鐵鏽味..."></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">聯絡方式 *</label>
-          <input type="text" class="form-input" placeholder="手機或 LINE ID" />
+          <label class="form-label" for="contact">聯絡方式 *</label>
+          <input type="text" class="form-input" id="contact" name="contact" placeholder="手機或 LINE ID" required />
         </div>
 
-        <button type="submit" class="btn-submit">送出詢價</button>
+        <!-- Honeypot field: hidden from users, bots will fill it -->
+        <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;" aria-hidden="true">
+          <label for="_honeypot">請勿填寫</label>
+          <input type="text" id="_honeypot" name="_honeypot" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">送出詢價</button>
+
+        <div id="form-status" style="display:none;margin-top:16px;padding:12px 16px;border-radius:8px;font-size:14px;text-align:center;"></div>
 
         <p style="font-size:12px;font-weight:300;color:var(--color-text-muted);margin-top:var(--space-5);text-align:center;">
           你的資訊僅用於媒合，不會轉售或用於廣告。
@@ -59,3 +67,61 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
 </BaseLayout>
+
+<script>
+  const form = document.getElementById('inquiry-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const statusEl = document.getElementById('form-status') as HTMLDivElement;
+
+  function showStatus(msg: string, isError = false) {
+    statusEl.textContent = msg;
+    statusEl.style.display = 'block';
+    statusEl.style.backgroundColor = isError ? '#fee2e2' : '#dcfce7';
+    statusEl.style.color = isError ? '#991b1b' : '#166534';
+    statusEl.style.border = isError ? '1px solid #fca5a5' : '1px solid #86efac';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Basic client-side validation
+    const region = (document.getElementById('region') as HTMLSelectElement).value;
+    const houseType = (document.getElementById('houseType') as HTMLSelectElement).value;
+    const description = (document.getElementById('description') as HTMLTextAreaElement).value;
+    const contact = (document.getElementById('contact') as HTMLInputElement).value.trim();
+    const honeypot = (document.getElementById('_honeypot') as HTMLInputElement).value;
+
+    if (!contact) {
+      showStatus('請填寫聯絡方式（手機或 LINE ID）。', true);
+      return;
+    }
+
+    // Loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送出中…';
+    statusEl.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ region, houseType, description, contact, _honeypot: honeypot }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        showStatus('✅ 詢價已送出，我們會盡快與你聯繫！');
+        form.reset();
+      } else {
+        showStatus(data.error || '送出失敗，請稍後再試。', true);
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送出詢價';
+      }
+    } catch {
+      showStatus('網路錯誤，請稍後再試。', true);
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送出詢價';
+    }
+  });
+</script>
