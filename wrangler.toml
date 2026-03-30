@@ -1,0 +1,6 @@
+name = "homes119"
+pages_build_output_dir = "dist"
+
+[vars]
+TELEGRAM_CHAT_ID = "7854440375"
+NOTIFY_EMAIL = "g08163314@gmail.com"

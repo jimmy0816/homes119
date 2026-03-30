@@ -37,17 +37,17 @@ function checkRateLimit(ip) {
 
 function formatTelegramMessage(data) {
   const now = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' });
-  return `🏠 *新詢價通知 — homes119.com*
+  return `🏠 <b>新詢價通知 — homes119.com</b>
 
-📍 *地區：* ${escapeMarkdown(data.region)}
-🏢 *房型：* ${escapeMarkdown(data.houseType)}
-📝 *問題描述：* ${data.description ? escapeMarkdown(data.description) : '（未填寫）'}
-📞 *聯絡方式：* ${escapeMarkdown(data.contact)}
-🕐 *提交時間：* ${now}`;
+📍 <b>地區：</b>${escapeHtml(data.region)}
+🏢 <b>房型：</b>${escapeHtml(data.houseType)}
+📝 <b>問題描述：</b>${data.description ? escapeHtml(data.description) : '（未填寫）'}
+📞 <b>聯絡方式：</b>${escapeHtml(data.contact)}
+🕐 <b>提交時間：</b>${now}`;
 }
 
-function escapeMarkdown(text) {
-  return String(text).replace(/[_*[\]()~`>#+\-=|{}.!\\]/g, '\\$&');
+function escapeHtml(text) {
+  return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 async function sendTelegram(botToken, chatId, message) {
@@ -58,7 +58,7 @@ async function sendTelegram(botToken, chatId, message) {
     body: JSON.stringify({
       chat_id: chatId,
       text: message,
-      parse_mode: 'MarkdownV2',
+      parse_mode: 'HTML',
     }),
   });
   const json = await res.json();
@@ -156,22 +156,31 @@ export async function onRequestPost(context) {
 
   // Send Telegram notification
   const botToken = env.TELEGRAM_BOT_TOKEN;
-  const chatId = '7854440375';
+  const chatId = env.TELEGRAM_CHAT_ID || '7854440375';
+  const debug = { hasBotToken: !!botToken, tokenPrefix: botToken ? botToken.slice(0,8) + '...' : 'NONE', chatId };
+  
+  let telegramResult = null;
   if (botToken) {
     const msg = formatTelegramMessage(data);
-    await sendTelegram(botToken, chatId, msg);
+    telegramResult = await sendTelegram(botToken, chatId, msg);
+    debug.telegramOk = telegramResult;
+    debug.msgLength = msg.length;
   } else {
-    console.warn('TELEGRAM_BOT_TOKEN not set — skipping Telegram notification');
+    debug.telegramSkipped = true;
   }
 
   // Send email via Resend (optional)
   const resendKey = env.RESEND_API_KEY;
+  const notifyEmail = env.NOTIFY_EMAIL || 'g08163314@gmail.com';
   if (resendKey) {
-    await sendResendEmail(resendKey, 'g08163314@gmail.com', data);
+    await sendResendEmail(resendKey, notifyEmail, data);
+    debug.emailSent = true;
+  } else {
+    debug.emailSkipped = 'no RESEND_API_KEY';
   }
 
   return new Response(
-    JSON.stringify({ success: true }),
+    JSON.stringify({ success: true, debug }),
     { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
   );
 }
